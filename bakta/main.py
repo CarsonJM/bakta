@@ -238,34 +238,35 @@ def main():
     if(cfg.skip_cds):
         print('skip CDS prediction...')
     else:
-        print('predict & annotate CDSs...')
-        log.debug('predict CDS')
-        cdss = feat_cds.predict(data)
-        print(f"\tpredicted: {len(cdss)} ")
+        ### Skip CDS prediction because pyrodigal-gv CDSs will be used ###
+        # print('predict & annotate CDSs...')
+        # log.debug('predict CDS')
+        # cdss = feat_cds.predict(data)
+        # print(f"\tpredicted: {len(cdss)} ")
 
-        if(len(cdss) > 0):
-            log.debug('discard too-long CDS')
-            discarded_cdss = feat_cds.filter_length(cdss)
-            print(f'\tdiscarded length: {len(discarded_cdss)}')
-            cdss = [cds for cds in cdss if 'discarded' not in cds]
+        # if(len(cdss) > 0):
+        #     log.debug('discard too-long CDS')
+        #     discarded_cdss = feat_cds.filter_length(cdss)
+        #     print(f'\tdiscarded length: {len(discarded_cdss)}')
+        #     cdss = [cds for cds in cdss if 'discarded' not in cds]
 
-        if(len(cdss) > 0):
-            log.debug('detect spurious CDS')
-            discarded_cdss = orf.detect_spurious(cdss)
-            print(f'\tdiscarded spurious: {len(discarded_cdss)}')
-            cdss = [cds for cds in cdss if 'discarded' not in cds]
+        # if(len(cdss) > 0):
+        #     log.debug('detect spurious CDS')
+        #     discarded_cdss = orf.detect_spurious(cdss)
+        #     print(f'\tdiscarded spurious: {len(discarded_cdss)}')
+        #     cdss = [cds for cds in cdss if 'discarded' not in cds]
         
-        if(len(cdss) > 0):
-            log.debug('revise translational exceptions')
-            no_revised = feat_cds.revise_translational_exceptions(data, cdss)
-            print(f'\trevised translational exceptions: {no_revised}')
-            cdss = [cds for cds in cdss if 'discarded' not in cds]
+        # if(len(cdss) > 0):
+        #     log.debug('revise translational exceptions')
+        #     no_revised = feat_cds.revise_translational_exceptions(data, cdss)
+        #     print(f'\trevised translational exceptions: {no_revised}')
+        #     cdss = [cds for cds in cdss if 'discarded' not in cds]
         
         if(cfg.regions):
             log.debug('import user-provided CDS regions')
             imported_cdss = feat_cds.import_user_cdss(data, cfg.regions)
             print(f'\timported CDS regions: {len(imported_cdss)}')
-            cdss.extend(imported_cdss)
+            cdss = imported_cdss
 
         if(len(cdss) > 0):
             if(cfg.db_info['type'] == 'full'):
@@ -340,7 +341,8 @@ def main():
             if(len(hypotheticals) > 0):
                 log.debug('analyze hypotheticals')
                 print(f'\tanalyze hypothetical proteins: {len(hypotheticals)}')
-                pfam_hits = feat_cds.predict_pfam(hypotheticals)
+                # pfam_hits = feat_cds.predict_pfam(hypotheticals)
+                pfam_hits = [] # skip pfam since this will be run later
                 print(f"\t\tdetected Pfam hits: {len(pfam_hits)} ")
                 feat_cds.analyze_proteins(hypotheticals)
                 print('\t\tcalculated proteins statistics')
