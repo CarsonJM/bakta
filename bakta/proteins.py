@@ -273,7 +273,8 @@ def annotate_aa(aas: Sequence[dict]):
     hypotheticals = [aa for aa in aas if 'hypothetical' in aa]
     if(len(hypotheticals) > 0):
         print(f'\tanalyze hypothetical proteins: {len(hypotheticals)}')
-        pfam_hits = feat_cds.predict_pfam(hypotheticals)
+        # pfam_hits = feat_cds.predict_pfam(hypotheticals)
+        pfam_hits = []
         print(f"\tdetected Pfam hits: {len(pfam_hits)}")
         feat_cds.analyze_proteins(hypotheticals)
         print('\tcalculated proteins statistics')
