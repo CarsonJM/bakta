@@ -26,6 +26,7 @@ def search(cdss: Sequence[dict], cds_fasta_path: Path, expert_system: str, db_pa
         '--db', str(db_path),
         '--out', str(diamond_output_path),
         '--max-target-seqs', '1',  # single best output
+        '--very-sensitive',
         '--outfmt', '6', 'qseqid', 'sseqid', 'qlen', 'slen', 'length', 'pident', 'evalue', 'bitscore', 'stitle',
         '--threads', str(cfg.threads),
         '--load-threads', str(min(cfg.threads, 8)),  # limit load threads to max 8
